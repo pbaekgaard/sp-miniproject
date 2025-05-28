@@ -1,9 +1,7 @@
-#include "hello.hpp"
 #include <iostream>
 
 int main()
 {
-    std::cout << "Main started!" << std::endl;
-    say_hello();
+    std::cout << "Hello Mini-Project" << std::endl;
     return 0;
 }
