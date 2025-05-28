@@ -1,0 +1,16 @@
+# ninja log v6
+1	9	1748456849656448145	/home/pbk/school/SP/sp-miniproject/build/CMakeFiles/cmake.verify_globs	a076bf253b594885
+11	23	1748456849665663535	tests/CMakeFiles/Tests.dir/test1.cpp.o	d9af34f4d8c0b893
+10	743	1748456849665270725	CMakeFiles/sp-miniproject.dir/src/main.cpp.o	e74ec967fedfdbef
+10	783	1748456849664811119	CMakeFiles/lib.dir/src/hello.cpp.o	82552d89c8a87954
+783	813	1748456850437404252	liblib.a	72f01a6673945e40
+813	861	1748456850467404447	sp-miniproject	bd586eb468be2591
+10	1331	1748456849665125051	extern/googletest/googletest/CMakeFiles/gtest_main.dir/src/gtest_main.cc.o	4337f0d9b6c0f24e
+10	1577	1748456849665450925	extern/googletest/googlemock/CMakeFiles/gmock_main.dir/src/gmock_main.cc.o	5503b80ac366f0f9
+10	2465	1748456849664963486	extern/googletest/googlemock/CMakeFiles/gmock.dir/src/gmock-all.cc.o	d732e713d21f3d99
+10	4163	1748456849664399212	extern/googletest/googletest/CMakeFiles/gtest.dir/src/gtest-all.cc.o	2689221ded70f3b1
+4164	4261	1748456853818426348	lib/libgtest.a	18a82012c67e70e4
+4261	4289	1748456853916369447	lib/libgtest_main.a	8ebc7b7fe79178bf
+4261	4297	1748456853915426983	lib/libgmock.a	8d057adde39f32
+4297	4326	1748456853951427219	lib/libgmock_main.a	a6c0405518694012
+4289	4363	1748456853943427167	tests/Tests	2a06ec735e272e19
