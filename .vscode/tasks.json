@@ -1,0 +1,45 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Ninja Build (Release)",
+      "type": "shell",
+      "command": "[ -d build ] || cmake -GNinja -B build; ninja -C build",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "Ninja Build Clean (Release)",
+      "type": "shell",
+      "command": "ninja clean; ninja",
+      "options": {
+        "cwd": "${workspaceFolder}/build"
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "Run Executable (Release)",
+      "type": "shell",
+      "command": "exec_name=$(awk ' /^[ \\t]*set\\(/ { match($0, /^[ \\t]*set\\s*\\(\\s*([^ \\t)]+)\\s+([^ \\t)]+)\\s*\\)/, m); if (m[1] && m[2]) vars[m[1]]=m[2] } /^[ \\t]*project\\(/ { match($0, /project\\(([^\\)]+)\\)/, p); proj=p[1]; if (proj ~ /^\\$\\{[^}]+\\}$/) { varname=proj; gsub(/^\\$\\{|\\}$/, \"\", varname); print vars[varname] } else { print proj }; exit }' CMakeLists.txt); ./build/$exec_name",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      }
+    },
+    {
+      "label": "Run Tests",
+      "type": "shell",
+      "command": "latest_dir=$( [ ! -d build ] && echo Debug || ([ ! -d Debug ] && echo build || (stat -c '%Y' build > /tmp/build_time && stat -c '%Y' Debug > /tmp/debug_time && if [ $(cat /tmp/build_time) -gt $(cat /tmp/debug_time) ]; then echo build; else echo Debug; fi) ) ); GTEST_COLOR=1 ctest --test-dir $latest_dir --output-on-failure -V",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      }
+    }
+  ]
+}

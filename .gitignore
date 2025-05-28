@@ -33,3 +33,11 @@
 
 # Cache
 *.cache/
+build/CMakeFiles
+build/Testing/Temporary
+build/extern/googletest/googlemock/CMakeFiles/gmock.dir/src
+build/extern/googletest/googletest/CMakeFiles/gtest.dir/src
+build/lib
+build/extern/googletest
+build
+debug-build
