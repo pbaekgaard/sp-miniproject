@@ -11,9 +11,9 @@ class Vessel
     Vessel &operator=(Vessel &&) = default;
     Vessel &operator=(const Vessel &) = default;
     ~Vessel();
-    size_t add(std::string item, size_t rate); // Adds to the symbol table
-    void add(Reaction reaction_specification); // Adds to the symbol table
-    size_t environment();
+    std::size_t add(std::string item, std::size_t rate); // Adds to the symbol table
+    void add(Reaction reaction_specification);           // Adds to the symbol table
+    std::size_t environment();
 
   private:
     std::string name;

@@ -1,12 +1,27 @@
 #include "reactant.hpp"
 #include "reaction.hpp"
 
+// Used for creating a reaction with one reactant and its rate // R1
 Reaction Reactant::operator>>(size_t rate)
 {
-    return Reaction(*this, rate);
+    auto reaction = Reaction(*this);
+    reaction >> rate;
+    return reaction;
 }
 
+// Used for creating a reaction with 2 reactants // R1
 Reaction Reactant::operator+(const Reactant &other) const
 {
     return Reaction(*this, other);
+}
+
+bool Reactant::operator==(const Reactant &other) const
+{
+    return name == other.name && quantity == other.quantity;
+}
+
+Reactant::Reactant(std::string reactantName, std::size_t quantity)
+{
+    name = reactantName;
+    quantity = quantity;
 }

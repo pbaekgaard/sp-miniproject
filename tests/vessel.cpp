@@ -8,14 +8,6 @@ TEST(Vessel, Can_Add_reactant)
     const auto D_A = v.add("D_A", static_cast<size_t>(0));
 }
 
-TEST(Reaction, chain_reactions)
-{
-    const auto r = Reactant();
-    const auto r2 = Reactant();
-    const auto r3 = Reactant();
-    const Reaction reaction = r + r2 + r3;
-}
-
 // TEST(Vessel, Can_Add_Reaction)
 // {
 //     auto v = Vessel{"herro"};

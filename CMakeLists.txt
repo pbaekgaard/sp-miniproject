@@ -22,7 +22,7 @@ if(AllSources)
 
     option(ENABLE_STRICT "Enable strict compilation warnings" OFF)
     if(ENABLE_STRICT AND CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
-        # target_compile_options(lib PRIVATE -Wall -Wextra -Wpedantic -Werror)
+        target_compile_options(lib PRIVATE -Wall -Wextra -Wpedantic -Werror)
     endif()
 
     add_executable(${PROJECT_NAME} src/main.cpp)
