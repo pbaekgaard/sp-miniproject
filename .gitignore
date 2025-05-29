@@ -40,6 +40,7 @@ build/extern/googletest/googletest/CMakeFiles/gtest.dir/src
 build/lib
 build/extern/googletest
 build
+cmake-build-debug/
 debug-build
 listing.*
 extern.pdf

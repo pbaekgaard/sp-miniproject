@@ -1,5 +1,0 @@
-if(EXISTS "C:/Tidligere_skrivebord/UNI_SOFTWARE/8_semester/STP/sp-miniproject/cmake-build-debug/tests/Tests[1]_tests.cmake")
-  include("C:/Tidligere_skrivebord/UNI_SOFTWARE/8_semester/STP/sp-miniproject/cmake-build-debug/tests/Tests[1]_tests.cmake")
-else()
-  add_test(Tests_NOT_BUILT Tests_NOT_BUILT)
-endif()
