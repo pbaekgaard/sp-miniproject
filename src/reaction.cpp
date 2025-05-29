@@ -1,7 +1,6 @@
 #include "reaction.hpp"
+#include "environment.hpp"
 #include "reactant.hpp"
-
-// used for (A+B+C+D+E+F+G)
 
 // Add a product to the reaction // R1
 Reaction &Reaction::operator>>=(const Reaction &product)
@@ -10,13 +9,18 @@ Reaction &Reaction::operator>>=(const Reaction &product)
     return *this;
 }
 
-bool Reaction::operator==(const Reaction &other) const {
-    return products == other.products
-            && inputs == other.inputs
-            && delay == other.delay
-            && rate == other.rate;
+Reaction &Reaction::operator>>=(const Environment &env)
+{
+    products.emplace_back(env);
+    return *this;
 }
 
+bool Reaction::operator==(const Reaction &other) const
+{
+    return products == other.products && inputs == other.inputs && delay == other.delay && rate == other.rate;
+}
+
+// used for (A+B+C+D+E+F+G)
 // Add another reactant to the reaction // R1
 Reaction &Reaction::operator+(const Reactant &r)
 {
@@ -25,7 +29,7 @@ Reaction &Reaction::operator+(const Reactant &r)
 }
 
 // Add a rate to the reaction // R1
-Reaction& Reaction::operator>>(size_t reaction_rate)
+Reaction &Reaction::operator>>(size_t reaction_rate)
 {
     rate = reaction_rate;
     return *this;

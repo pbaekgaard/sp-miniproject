@@ -1,4 +1,5 @@
 #pragma once
+#include "environment.hpp"
 #include "reaction.hpp"
 #include <string>
 
@@ -10,10 +11,12 @@ class Vessel
     Vessel(const Vessel &) = default;
     Vessel &operator=(Vessel &&) = default;
     Vessel &operator=(const Vessel &) = default;
-    ~Vessel();
     std::size_t add(std::string item, std::size_t rate); // Adds to the symbol table
     void add(Reaction reaction_specification);           // Adds to the symbol table
-    std::size_t environment();
+    Environment environment()
+    {
+        return Environment();
+    };
 
   private:
     std::string name;

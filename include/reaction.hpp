@@ -3,11 +3,12 @@
 #include <concepts>
 #include <vector>
 
+class Environment;
 class Reaction
 {
   public:
     template <typename... Args>
-    requires(IsReactant<Args> && ...)
+        requires(IsReactant<Args> && ...)
     Reaction(Args &&...reactants)
     {
         (inputs.push_back(std::forward<Args>(reactants)), ...);
@@ -17,8 +18,9 @@ class Reaction
     bool operator==(const Reaction &other) const;
     Reaction &operator=(const Reaction &) = default;
     Reaction &operator+(const Reactant &r); // For chaining (A + B + C)
-    Reaction& operator>>(size_t rate);
+    Reaction &operator>>(size_t rate);
     Reaction &operator>>=(const Reaction &product); // For adding the product to the reaction
+    Reaction &operator>>=(const Environment &env);  // For adding the product to the reaction
     std::vector<Reactant> inputs{};
     std::vector<Reaction> products{};
 
