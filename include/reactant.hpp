@@ -14,8 +14,6 @@ class Reactant
     Reactant &operator=(const Reactant &) = default;
     Reaction operator>>(std::size_t); // for creating a reaction with just one reactant
     Reaction operator+(const Reactant &other) const;
-    ~Reactant();
-
   private:
     std::size_t quantity{0};
     std::string name;

@@ -4,27 +4,29 @@
 // used for (A+B+C+D+E+F+G)
 
 // Add a product to the reaction // R1
-Reaction &Reaction::operator>>=(Reactant product)
+Reaction &Reaction::operator>>=(const Reaction &product)
 {
-    products.push_back(std::hash<std::string>{}("TODO: get name from product")); // Placeholder
+    products.emplace_back(product);
     return *this;
+}
+
+bool Reaction::operator==(const Reaction &other) const {
+    return products == other.products
+            && inputs == other.inputs
+            && delay == other.delay
+            && rate == other.rate;
 }
 
 // Add another reactant to the reaction // R1
 Reaction &Reaction::operator+(const Reactant &r)
 {
     inputs.push_back(r);
+    return *this;
 }
 
 // Add a rate to the reaction // R1
-void Reaction::operator>>(size_t rate)
+Reaction& Reaction::operator>>(size_t reaction_rate)
 {
-    rate = rate;
-}
-
-template <typename... Args>
-    requires(IsReactant<Args> && ...)
-Reaction::Reaction(Args &&...reactants)
-{
-    (inputs.push_back(std::forward<Args>(reactants)), ...);
+    rate = reaction_rate;
+    return *this;
 }

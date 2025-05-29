@@ -14,4 +14,6 @@ if(LIB_EXISTS)
     target_link_libraries(${This} PUBLIC lib)
 endif()
 
-add_test(NAME ${This} COMMAND ${This})
+# 👇 This is the key part: use GTest integration with CTest
+include(GoogleTest)
+gtest_discover_tests(${This})
