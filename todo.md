@@ -6,15 +6,17 @@ _Make sure to include testing and benchmarking code as well as the sample result
 
 # REQUIREMENTS
 
-- [ ] The library should overload operators to support the reaction rule typesetting directly in C++ code.
+- [X] The library should overload operators to support the reaction rule typesetting directly in C++ code.
 
-- [ ] Provide pretty-printing of the reaction network in a) human readable format and b) network graph (e.g. Fig. 4).
+- [-] Provide pretty-printing of the reaction network in 
+    - [X] a) human readable format
+    - [ ] b) network graph (e.g. Fig. 4).
 
-- [ ] Implement a generic symbol table to store and lookup objects of user-defined key and value types. Support failure cases when a) the table does not contain a looked up symbol, b) the table already contains a symbol that is being added. Demonstrate the usage of the symbol table with the reactants (names and initial counts).
+- [X] Implement a generic symbol table to store and lookup objects of user-defined key and value types. Support failure cases when a) the table does not contain a looked up symbol, b) the table already contains a symbol that is being added. Demonstrate the usage of the symbol table with the reactants (names and initial counts).
 
 - [ ] Implement the stochastic simulation (Alg. 1) of the system using the reaction rules.
 
-- [ ] Demonstrate the application of the library on the three examples (shown in Fig. 1, 2, 3).
+- [-] Demonstrate the application of the library on the three examples (shown in Fig. 1, 2, 3).
 
 - [ ]  Display simulation trajectories of how the amounts change. External tools/libraries can be used to visualize.
 
@@ -22,7 +24,7 @@ _Make sure to include testing and benchmarking code as well as the sample result
 
 - [ ] Implement support for multiple CPU cores by parallelizing the computation of several simulations at the same time. Estimate the likely (average) value of the hospitalized peak over 100 simulations.
 
-- [ ] Implement unit tests (e.g. test symbol table methods, their failure cases, pretty-printing reaction rules, etc).
+- [-] Implement unit tests (e.g. test symbol table methods, their failure cases, pretty-printing reaction rules, etc).
 
 - [ ] Benchmark and compare the stochastic simulation performance (e.g. the time it takes to compute 100 simulations a single core, multiple cores, or improved implementation). Record the timings and make your conclusions.
 
