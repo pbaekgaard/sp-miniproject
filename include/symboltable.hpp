@@ -6,9 +6,9 @@
 
 template <typename Key, typename Value> class SymbolTable
 {
-    std::unordered_map<Key, Value> table;
 
   public:
+    std::unordered_map<Key, Value> table;
     bool add(const Key &key, const Value &value)
     {
         auto [it, inserted] = table.emplace(key, value);

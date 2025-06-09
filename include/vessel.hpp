@@ -20,6 +20,7 @@ class Vessel
     {
         return Reaction(0);
     };
+    void generateGraph() const;
 
   private:
     std::string name;
