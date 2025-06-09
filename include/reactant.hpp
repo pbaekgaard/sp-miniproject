@@ -1,4 +1,5 @@
 #pragma once
+#include "concepts.hpp"
 #include <string>
 
 class Reaction;
@@ -12,7 +13,7 @@ class Reactant
     Reactant &operator=(Reactant &&) = default;
     bool operator==(const Reactant &other) const;
     Reactant &operator=(const Reactant &) = default;
-    Reaction operator>>(std::size_t) const; // for creating a reaction with just one reactant
+    template <RateVal T> Reaction operator>>(T rate) const;
     Reaction operator+(const Reactant &other) const;
     std::size_t quantity{0};
     std::string name;

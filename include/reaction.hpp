@@ -1,9 +1,7 @@
 #pragma once
+#include "concepts.hpp"
 #include "reactant.hpp"
-#include <concepts>
-#include <functional>
 #include <iostream>
-#include <optional>
 #include <ostream>
 #include <vector>
 
@@ -30,16 +28,20 @@ class Reaction
     Reaction(const Reaction &other) = default;
     bool operator==(const Reaction &other) const;
     Reaction &operator=(const Reaction &) = default;
-    Reaction &operator+(const Reactant &r);         // For chaining (A + B + C)
-    Reaction &operator>>(size_t rate);              // For adding the rate of the reaction
+    Reaction &operator+(const Reactant &r); // For chaining (A + B + C)
+    template <RateVal T> Reaction &operator>>(T reaction_rate)
+    {
+        rate = static_cast<double>(reaction_rate);
+        return *this;
+    }
     Reaction &operator>>=(const Reaction &product); // For adding the product to the reaction
     Reaction &operator>>=(const Reactant &product); // For adding the product to the reaction
     std::vector<Reaction>
         products{}; // Maybe this should be a symbol table? that is generic so we can use Environment in this
     std::vector<Reactant> inputs{}; // Wont hurt to do the same here
 
-    size_t delay{0};
-    size_t rate{0};
+    double delay{0};
+    double rate{0};
     int incrementAmount = 1;
     friend std::ostream &operator<<(std::ostream &os, const Reaction &r);
     std::string hash() const;
@@ -48,3 +50,10 @@ class Reaction
         std::cout << *this << "\n";
     }
 };
+
+template <RateVal T> Reaction Reactant::operator>>(T rate) const
+{
+    auto reaction = Reaction(*this);
+    reaction >> rate;
+    return reaction;
+}

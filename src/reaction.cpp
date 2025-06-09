@@ -44,13 +44,6 @@ Reaction &Reaction::operator+(const Reactant &r)
     return *this;
 }
 
-// Add a rate to the reaction // R1
-Reaction &Reaction::operator>>(size_t reaction_rate)
-{
-    rate = reaction_rate;
-    return *this;
-}
-
 std::ostream &operator<<(std::ostream &os, const Reaction &reaction)
 {
     os << "Inputs: ";
