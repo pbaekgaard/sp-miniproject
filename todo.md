@@ -16,7 +16,7 @@ _Make sure to include testing and benchmarking code as well as the sample result
 
 - [ ] Implement the stochastic simulation (Alg. 1) of the system using the reaction rules.
 
-- [-] Demonstrate the application of the library on the three examples (shown in Fig. 1, 2, 3).
+- [X] Demonstrate the application of the library on the three examples (shown in Fig. 1, 2, 3).
 
 - [ ]  Display simulation trajectories of how the amounts change. External tools/libraries can be used to visualize.
 
