@@ -19,7 +19,7 @@ Reactant::Reactant(std::string reactantName, std::size_t quantity)
     this->quantity = quantity;
 }
 
-std::ostream &operator<<(std::ostream &os, const Reactant &r)
+std::ostream &operator<<(std::ostream &os, const Reactant &r) // R2
 {
     os << r.name << "(" << r.quantity << ")";
     return os;

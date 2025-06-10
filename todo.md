@@ -8,9 +8,9 @@ _Make sure to include testing and benchmarking code as well as the sample result
 
 - [X] The library should overload operators to support the reaction rule typesetting directly in C++ code.
 
-- [-] Provide pretty-printing of the reaction network in 
+- [X] Provide pretty-printing of the reaction network in 
     - [X] a) human readable format
-    - [ ] b) network graph (e.g. Fig. 4).
+    - [X] b) network graph (e.g. Fig. 4).
 
 - [X] Implement a generic symbol table to store and lookup objects of user-defined key and value types. Support failure cases when a) the table does not contain a looked up symbol, b) the table already contains a symbol that is being added. Demonstrate the usage of the symbol table with the reactants (names and initial counts).
 

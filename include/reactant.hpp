@@ -1,4 +1,5 @@
 #pragma once
+#include "concepts.hpp"
 #include <string>
 
 class Reaction; // still needed for declaration
@@ -12,11 +13,7 @@ class Reactant
     Reactant &operator=(Reactant &&) = default;
     bool operator==(const Reactant &other) const;
     Reactant &operator=(const Reactant &) = default;
-
-    // Only declarations here
-    template <std::floating_point T> Reaction operator>>(T rate) const;
-    template <std::integral T> Reaction operator>>(T rate) const;
-
+    template <RateVal T> Reaction operator>>(T rate) const;
     Reaction operator+(const Reactant &other) const;
     std::size_t quantity{0};
     std::string name;
@@ -26,5 +23,3 @@ class Reactant
 
 template <typename T>
 concept IsReactant = std::is_same_v<std::remove_cvref_t<T>, Reactant>;
-
-// NO: #include "reactant.impl.hpp"

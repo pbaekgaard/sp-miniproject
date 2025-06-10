@@ -24,6 +24,7 @@ void Vessel::add(Reaction reaction_specification)
     reactionTable.add(reaction_specification.hash(), reaction_specification);
 }
 
+// R2
 void Vessel::generateGraph() const
 {
     std::ofstream file("graph.dot");
@@ -40,7 +41,7 @@ void Vessel::generateGraph() const
     {
         std::cout << reaction.rate << std::endl;
         auto const rateName = "r" + std::to_string(rateI);
-        out += rateName + "[label=" + "\"" + std::to_string(reaction.rate) + "\"" +
+        out += rateName + "[label=" + "\"" + std::format("{:g}", reaction.rate) + "\"" +
                ",shape=\"oval\",style=\"filled\",fillcolor=\"yellow\"];\n";
         for (const auto input : reaction.inputs)
         {

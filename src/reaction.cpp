@@ -44,6 +44,7 @@ Reaction &Reaction::operator+(const Reactant &r)
     return *this;
 }
 
+// R2
 std::ostream &operator<<(std::ostream &os, const Reaction &reaction)
 {
     os << "Inputs: ";

@@ -104,4 +104,5 @@ TEST(CircadianRhythm, full_example)
     EXPECT_TRUE(reactant.name == "DA");
     EXPECT_TRUE(reactant2.quantity == 0);
     EXPECT_TRUE(reactant2.name == "D_A");
+    v.generateGraph();
 }
