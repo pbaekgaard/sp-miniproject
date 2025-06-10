@@ -2,6 +2,7 @@
 #include "concepts.hpp"
 #include "reactant.hpp"
 #include <iostream>
+#include <limits>
 #include <ostream>
 #include <vector>
 
@@ -40,7 +41,7 @@ class Reaction
         products{}; // Maybe this should be a symbol table? that is generic so we can use Environment in this
     std::vector<Reactant> inputs{}; // Wont hurt to do the same here
 
-    double delay{0};
+    double delay{std::numeric_limits<double>::max()};
     double rate{0};
     int incrementAmount = 1;
     friend std::ostream &operator<<(std::ostream &os, const Reaction &r);

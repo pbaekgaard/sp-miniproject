@@ -5,6 +5,7 @@
 #include <filesystem>
 #include <format>
 #include <fstream>
+#include <random>
 #include <string>
 
 Vessel::Vessel(std::string vessel_name)
@@ -61,4 +62,39 @@ void Vessel::generateGraph() const
     // put into file
     file << out;
     file.close();
+}
+
+void Vessel::simulate(std::size_t endTime) {
+    double t{0};
+    std::mt19937 gen(std::random_device{}());
+    std::cout << "Before:\n" << std::endl;
+    reactantTable.print();
+    while (t<=endTime)
+    {
+        Reaction r{};
+        for (auto &[key, reaction] : reactionTable.table) {
+            auto lambda_eff = reaction.rate;
+            for (const auto input : reaction.inputs) {
+                lambda_eff *= reactantTable.get(input.name).quantity;
+            }
+            std::exponential_distribution<> dist(lambda_eff);
+            reaction.delay = dist(gen);
+            r = reaction.delay < r.delay ? reaction : r;
+        }
+        t += r.delay;
+        if (std::all_of(r.inputs.begin(), r.inputs.end(),[&](const auto input) {return reactantTable.get(input.name).quantity > 0;})) {
+            for (auto &input : r.inputs) {
+                auto &reactant = reactantTable.get(input.name);
+                reactant.quantity -= 1;
+            }
+            for (auto &product : r.products) {
+                for (auto &input : product.inputs) {
+                    auto &reactant = reactantTable.get(input.name);
+                    reactant.quantity += 1;
+                }
+            }
+        }
+    }
+    std::cout << "After:\n" << std::endl;
+    reactantTable.print();
 }

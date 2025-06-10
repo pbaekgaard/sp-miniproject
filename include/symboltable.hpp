@@ -9,13 +9,13 @@ template <typename Key, typename Value> class SymbolTable
 
   public:
     std::unordered_map<Key, Value> table;
-    bool add(const Key &key, const Value &value)
+    bool add(const Key &key,const Value &value)
     {
         auto [it, inserted] = table.emplace(key, value);
         return inserted;
     }
 
-    const Value &get(const Key &key) const
+    Value &get(const Key &key)
     {
         auto it = table.find(key);
         if (it == table.end())

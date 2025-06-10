@@ -86,7 +86,7 @@ TEST(CircadianRhythm, full_example)
     const auto A = v2.add("A", 0);
     const auto R = v2.add("R", 0);
     const auto C = v2.add("C", 0);
-    const auto v = circadian_rhythm();
+    auto v = circadian_rhythm();
     // std::cout << "REACTANT TABLE:" << std::endl;
     // v.reactantTable.print();
     // std::cout << "\n\n\n\nREACTION TABLE:" << std::endl;
@@ -105,4 +105,18 @@ TEST(CircadianRhythm, full_example)
     EXPECT_TRUE(reactant2.quantity == 0);
     EXPECT_TRUE(reactant2.name == "D_A");
     v.generateGraph();
+}
+
+TEST (SIMULATION, updates_reactants) {
+    auto v = Vessel{"Jutlandia"};
+    const auto A = v.add("A", 1);
+    const auto B = v.add("B", 1);
+    const auto C = v.add("C",0);
+    const auto gamma = 1;
+    v.add((A+B)>> gamma >>= C);
+    v.simulate(10);
+
+    EXPECT_EQ(v.reactantTable.get("A").quantity, 0);
+    EXPECT_EQ(v.reactantTable.get("B").quantity, 0);
+    EXPECT_EQ(v.reactantTable.get("C").quantity, 1);
 }
