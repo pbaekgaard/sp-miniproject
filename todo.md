@@ -3,7 +3,6 @@ _Make sure to include testing and benchmarking code as well as the sample result
 # TODO
 
 
-
 # REQUIREMENTS
 
 - [X] The library should overload operators to support the reaction rule typesetting directly in C++ code.
@@ -27,6 +26,16 @@ _Make sure to include testing and benchmarking code as well as the sample result
 - [-] Implement unit tests (e.g. test symbol table methods, their failure cases, pretty-printing reaction rules, etc).
 
 - [ ] Benchmark and compare the stochastic simulation performance (e.g. the time it takes to compute 100 simulations a single core, multiple cores, or improved implementation). Record the timings and make your conclusions.
+
+
+
+
+
+
+
+
+
+
 
 - [ ] The source code in original form (without binary/object/debug/release files). The code is evaluated by the detailed requirements implemented and thus should be commented with references to them (e.g. // R7).
 

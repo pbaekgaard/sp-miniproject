@@ -1,10 +1,12 @@
 #include "vessel.hpp"
 #include "hash.hpp"
 #include "reaction.hpp"
+#include <QtCharts>
 #include <cstdlib>
 #include <filesystem>
 #include <format>
 #include <fstream>
+#include <map>
 #include <random>
 #include <string>
 
@@ -64,37 +66,128 @@ void Vessel::generateGraph() const
     file.close();
 }
 
-void Vessel::simulate(std::size_t endTime) {
+void Vessel::simulate(std::size_t endTime, std::size_t sampleRate)
+{
     double t{0};
     std::mt19937 gen(std::random_device{}());
-    std::cout << "Before:\n" << std::endl;
-    reactantTable.print();
-    while (t<=endTime)
+
+    // Initialize a QLineSeries for each reactant
+    std::map<std::string, QLineSeries *> seriesMap;
+    for (auto &[name, reactant] : reactantTable.table)
+    {
+        auto *series = new QLineSeries();
+        series->setName(QString::fromStdString(name));
+        seriesMap[name] = series;
+    }
+
+    while (t <= endTime)
     {
         Reaction r{};
-        for (auto &[key, reaction] : reactionTable.table) {
-            auto lambda_eff = reaction.rate;
-            for (const auto input : reaction.inputs) {
+        for (auto &[key, reaction] : reactionTable.table)
+        {
+            double lambda_eff = reaction.rate;
+            for (const auto &input : reaction.inputs)
+            {
                 lambda_eff *= reactantTable.get(input.name).quantity;
             }
-            std::exponential_distribution<> dist(lambda_eff);
-            reaction.delay = dist(gen);
-            r = reaction.delay < r.delay ? reaction : r;
-        }
-        t += r.delay;
-        if (std::all_of(r.inputs.begin(), r.inputs.end(),[&](const auto input) {return reactantTable.get(input.name).quantity > 0;})) {
-            for (auto &input : r.inputs) {
-                auto &reactant = reactantTable.get(input.name);
-                reactant.quantity -= 1;
+
+            if (lambda_eff <= 0)
+            {
+                // skip this reaction, or assign a large delay
+                reaction.delay = std::numeric_limits<double>::max();
             }
-            for (auto &product : r.products) {
-                for (auto &input : product.inputs) {
-                    auto &reactant = reactantTable.get(input.name);
-                    reactant.quantity += 1;
+            else
+            {
+                std::exponential_distribution<> dist(lambda_eff);
+                reaction.delay = dist(gen);
+            }
+            r = (reaction.delay < r.delay) ? reaction : r;
+        }
+
+        t += r.delay;
+
+        // Sample at regular intervals
+        if (static_cast<std::size_t>(t) % sampleRate == 0)
+        {
+            for (auto &[name, reactant] : reactantTable.table)
+            {
+                seriesMap[name]->append(t, reactant.quantity);
+            }
+        }
+
+        // Execute reaction
+        if (std::all_of(r.inputs.begin(), r.inputs.end(),
+                        [&](const auto &input) { return reactantTable.get(input.name).quantity > 0; }))
+        {
+            for (auto &input : r.inputs)
+            {
+                reactantTable.get(input.name).quantity -= 1;
+            }
+            for (auto &product : r.products)
+            {
+                for (auto &input : product.inputs)
+                {
+                    reactantTable.get(input.name).quantity += 1;
                 }
             }
         }
     }
-    std::cout << "After:\n" << std::endl;
-    reactantTable.print();
+
+    // Create chart and add series
+    QChart *chart = new QChart();
+    chart->setTitle("Reactant Quantities Over Time");
+
+    for (auto &[name, series] : seriesMap)
+    {
+        chart->addSeries(series);
+    }
+
+    // Create axes
+    QValueAxis *axisX = new QValueAxis();
+    axisX->setTitleText("Time");
+    axisX->setLabelFormat("%.1f");
+    chart->addAxis(axisX, Qt::AlignBottom);
+
+    QValueAxis *axisY = new QValueAxis();
+    axisY->setTitleText("Quantity");
+    axisY->setLabelFormat("%.1f");
+    chart->addAxis(axisY, Qt::AlignLeft);
+
+    // Attach series to axes
+    for (auto &[_, series] : seriesMap)
+    {
+        series->attachAxis(axisX);
+        series->attachAxis(axisY);
+    }
+
+    // Find min and max values for quantity
+    double minQuantity = std::numeric_limits<double>::max();
+    double maxQuantity = std::numeric_limits<double>::lowest();
+
+    for (const auto &[name, series] : seriesMap)
+    {
+        for (const auto &point : series->points())
+        {
+            if (point.y() < minQuantity)
+                minQuantity = point.y();
+            if (point.y() > maxQuantity)
+                maxQuantity = point.y();
+        }
+    }
+
+    // Optionally add some padding for better visuals
+    const double padding = (maxQuantity - minQuantity) * 0.1;
+    minQuantity = std::max(0.0, minQuantity - padding);
+    maxQuantity += padding;
+
+    axisY->setRange(minQuantity, maxQuantity);
+
+    // For time axis you can also set the range similarly if desired:
+    axisX->setRange(0, endTime);
+
+    // Display chart
+    QChartView *chartView = new QChartView(chart);
+    chartView->setRenderHint(QPainter::Antialiasing);
+    chartView->resize(3000, 600);
+    chartView->show();
 }

@@ -5,6 +5,9 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_AUTORCC ON)
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTOUIC ON)
 
 include(CTest)
 enable_testing()
@@ -13,12 +16,32 @@ enable_testing()
 file(GLOB_RECURSE AllSources CONFIGURE_DEPENDS "${PROJECT_SOURCE_DIR}/src/*.cpp")
 list(FILTER AllSources EXCLUDE REGEX ".*/main\\.cpp$")
 
+find_package(Qt6 COMPONENTS Core Gui Widgets Charts REQUIRED)
+
+foreach(flag_var
+        CMAKE_C_FLAGS
+        CMAKE_C_FLAGS_DEBUG
+        CMAKE_C_FLAGS_RELEASE
+        CMAKE_C_FLAGS_RELWITHDEBINFO
+        CMAKE_C_FLAGS_MINSIZEREL
+        CMAKE_CXX_FLAGS
+        CMAKE_CXX_FLAGS_DEBUG
+        CMAKE_CXX_FLAGS_RELEASE
+        CMAKE_CXX_FLAGS_RELWITHDEBINFO
+        CMAKE_CXX_FLAGS_MINSIZEREL)
+    string(REPLACE "-mno-direct-extern-access" "" ${flag_var} "${${flag_var}}")
+endforeach()
 # Initialize LIB_EXISTS to false
 set(LIB_EXISTS FALSE)
 
 if(AllSources)
     add_library(lib STATIC ${AllSources})
+    set_target_properties(lib PROPERTIES AUTOMOC ON)
+
     target_include_directories(lib PUBLIC "${PROJECT_SOURCE_DIR}/include")
+
+    # Link Qt to the library target too
+    target_link_libraries(lib PUBLIC Qt6::Core Qt6::Gui Qt6::Widgets Qt6::Charts)
 
     option(ENABLE_STRICT "Enable strict compilation warnings" OFF)
     if(ENABLE_STRICT AND CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
@@ -36,10 +59,12 @@ endif()
 # Export LIB_EXISTS as a cache variable to pass to subdirectories
 set(LIB_EXISTS ${LIB_EXISTS} CACHE INTERNAL "Does the lib target exist")
 
+
 add_subdirectory(extern/googletest)
 add_subdirectory(tests)
 
 add_test(NAME ${PROJECT_NAME} COMMAND ${PROJECT_NAME})
+
 
 set(COMPILE_COMMANDS_LINK "${CMAKE_SOURCE_DIR}/compile_commands.json")
 set(COMPILE_COMMANDS_IN_BUILD "${CMAKE_BINARY_DIR}/compile_commands.json")

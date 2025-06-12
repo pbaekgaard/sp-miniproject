@@ -13,7 +13,7 @@ class Vessel
     Vessel &operator=(Vessel &&) = default;
     Vessel &operator=(const Vessel &) = default;
     Reactant add(std::string item, std::size_t quantity); // Adds to the symbol table
-    void add(Reaction reaction_specification);        // Adds to the symbol table
+    void add(Reaction reaction_specification);            // Adds to the symbol table
     SymbolTable<std::string, Reactant> reactantTable;
     SymbolTable<std::string, Reaction> reactionTable;
     Reaction environment()
@@ -21,7 +21,7 @@ class Vessel
         return Reaction(0);
     };
     void generateGraph() const;
-    void simulate(std::size_t endTime);
+    void simulate(std::size_t endTime, std::size_t sampleRate);
 
   private:
     std::string name;

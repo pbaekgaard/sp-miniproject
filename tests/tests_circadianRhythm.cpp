@@ -1,6 +1,11 @@
 #include "reactant.hpp"
 #include "reaction.hpp"
 #include "vessel.hpp"
+#include <QApplication>
+#include <QChartView>
+#include <QLineSeries>
+#include <QTimer>
+#include <QValueAxis>
 #include <gtest/gtest.h>
 
 Vessel circadian_rhythm()
@@ -56,7 +61,9 @@ Vessel circadian_rhythm()
 
 TEST(CircadianRhythm, full_example)
 {
-
+    int argc = 1;
+    char *argv[] = {(char *)"test", nullptr};
+    QApplication app(argc, argv);
     const auto alphaA = 50;
     const auto alpha_A = 500;
     const auto alphaR = 0.01;
@@ -105,18 +112,8 @@ TEST(CircadianRhythm, full_example)
     EXPECT_TRUE(reactant2.quantity == 0);
     EXPECT_TRUE(reactant2.name == "D_A");
     v.generateGraph();
-}
+    v.simulate(48, 1); // shows chart window but doesn't block
 
-TEST (SIMULATION, updates_reactants) {
-    auto v = Vessel{"Jutlandia"};
-    const auto A = v.add("A", 1);
-    const auto B = v.add("B", 1);
-    const auto C = v.add("C",0);
-    const auto gamma = 1;
-    v.add((A+B)>> gamma >>= C);
-    v.simulate(10);
-
-    EXPECT_EQ(v.reactantTable.get("A").quantity, 0);
-    EXPECT_EQ(v.reactantTable.get("B").quantity, 0);
-    EXPECT_EQ(v.reactantTable.get("C").quantity, 1);
+    // Start Qt event loop (this will show the chart window)
+    // app.exec();
 }

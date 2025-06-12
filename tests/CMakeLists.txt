@@ -1,19 +1,25 @@
 cmake_minimum_required(VERSION 3.12)
 
 set(This Tests)
+set(CMAKE_AUTORCC ON)
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTOUIC ON)
 
-file(GLOB_RECURSE Sources "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp")
+file(GLOB Sources
+    "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp"
+)
 
 add_executable(${This} ${Sources})
 
+find_package(Qt6 COMPONENTS Core Gui Widgets Charts REQUIRED)
 target_include_directories(${This} PUBLIC "${PROJECT_SOURCE_DIR}/include")
 
-target_link_libraries(${This} PUBLIC gtest_main)
+# Link Qt6::Widgets explicitly for QApplication
+target_link_libraries(${This} PUBLIC gtest_main Qt6::Core Qt6::Gui Qt6::Widgets Qt6::Charts)
 
 if(LIB_EXISTS)
     target_link_libraries(${This} PUBLIC lib)
 endif()
 
-# 👇 This is the key part: use GTest integration with CTest
 include(GoogleTest)
 gtest_discover_tests(${This})
