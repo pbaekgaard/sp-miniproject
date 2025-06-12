@@ -115,5 +115,5 @@ TEST(CircadianRhythm, full_example)
     v.simulate(48, 1); // shows chart window but doesn't block
 
     // Start Qt event loop (this will show the chart window)
-    // app.exec();
+    app.exec();
 }
