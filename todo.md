@@ -13,11 +13,11 @@ _Make sure to include testing and benchmarking code as well as the sample result
 
 - [X] Implement a generic symbol table to store and lookup objects of user-defined key and value types. Support failure cases when a) the table does not contain a looked up symbol, b) the table already contains a symbol that is being added. Demonstrate the usage of the symbol table with the reactants (names and initial counts).
 
-- [ ] Implement the stochastic simulation (Alg. 1) of the system using the reaction rules.
+- [X] Implement the stochastic simulation (Alg. 1) of the system using the reaction rules.
 
 - [X] Demonstrate the application of the library on the three examples (shown in Fig. 1, 2, 3).
 
-- [ ]  Display simulation trajectories of how the amounts change. External tools/libraries can be used to visualize.
+- [X]  Display simulation trajectories of how the amounts change. External tools/libraries can be used to visualize.
 
 - [ ] Implement a generic support for (any) user-supplied state observer function object or provide a lazy trajectory generation interface (coroutine). The observer itself should be part by the user/test program and not part of the library. To demonstrate the generic support, estimate the peak of hospitalized agents in Covid-19 example without storing an entire trajectory. Record the peak hospitalization values for population sizes of NNJ and NDK.
 

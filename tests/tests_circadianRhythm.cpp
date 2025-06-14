@@ -7,6 +7,7 @@
 #include <QTimer>
 #include <QValueAxis>
 #include <gtest/gtest.h>
+#include <tuple>
 
 Vessel circadian_rhythm()
 {
@@ -112,7 +113,7 @@ TEST(CircadianRhythm, full_example)
     EXPECT_TRUE(reactant2.quantity == 0);
     EXPECT_TRUE(reactant2.name == "D_A");
     v.generateGraph();
-    v.simulate(48, 1); // shows chart window but doesn't block
+    const auto simResults = v.simulate(48, 0); // shows chart window but doesn't block
 
     // Start Qt event loop (this will show the chart window)
     app.exec();

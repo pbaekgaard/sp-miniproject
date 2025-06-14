@@ -1,2 +1,2 @@
 CompileFlags:
-  Add: [-Wno-unused-command-line-argument]
+  Remove: [-mno-direct-extern-access]

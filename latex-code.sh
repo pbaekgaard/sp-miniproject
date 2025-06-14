@@ -286,5 +286,6 @@ EOF
 echo "Generates LaTeX report from C/C++ sources and TeX files it can find in the current directory."
 echo "Assumes that pdflatex (from TeX Live) and pandoc are installed."
 echo -e "Usage:\n\t$0 \"Author Name\" \"Document Title\""
-make_latex "$author" "$title" > listing.tex
-pdflatex listing.tex && pdflatex listing.tex && okular listing.pdf
+mkdir -p latex-code-output
+make_latex "$author" "$title" > latex-code-output/listing.tex
+pdflatex -output-directory latex-code-output latex-code-output/listing.tex

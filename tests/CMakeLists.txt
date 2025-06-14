@@ -1,5 +1,8 @@
 cmake_minimum_required(VERSION 3.12)
 
+set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(This Tests)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOMOC ON)
@@ -12,6 +15,7 @@ file(GLOB Sources
 add_executable(${This} ${Sources})
 
 find_package(Qt6 COMPONENTS Core Gui Widgets Charts REQUIRED)
+
 target_include_directories(${This} PUBLIC "${PROJECT_SOURCE_DIR}/include")
 
 # Link Qt6::Widgets explicitly for QApplication

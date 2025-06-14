@@ -1,6 +1,7 @@
 #include "vessel.hpp"
 #include <QApplication>
 #include <gtest/gtest.h>
+#include <tuple>
 
 TEST(SIMULATION, updates_reactants)
 {
@@ -15,14 +16,14 @@ TEST(SIMULATION, updates_reactants)
     const auto gamma = 1;
     v.add((A + B) >> gamma >>= C);
 
-    v.simulate(10, 1); // shows chart window but doesn't block
+    auto [reactantTableResults, reactionTableResults] = v.simulate(10, 1); // shows chart window but doesn't block
 
     // Quit the app after 3 seconds
     // Start Qt event loop (this will show the chart window)
     // app.exec();
 
     // After event loop quits, check results:
-    EXPECT_EQ(v.reactantTable.get("A").quantity, 0);
-    EXPECT_EQ(v.reactantTable.get("B").quantity, 0);
-    EXPECT_EQ(v.reactantTable.get("C").quantity, 1);
+    EXPECT_EQ(reactantTableResults.get("A").quantity, 0);
+    EXPECT_EQ(reactantTableResults.get("B").quantity, 0);
+    EXPECT_EQ(reactantTableResults.get("C").quantity, 1);
 }

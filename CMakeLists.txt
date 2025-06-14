@@ -19,19 +19,6 @@ list(FILTER AllSources EXCLUDE REGEX ".*/main\\.cpp$")
 
 find_package(Qt6 COMPONENTS Core Gui Widgets Charts REQUIRED)
 
-foreach(flag_var
-        CMAKE_C_FLAGS
-        CMAKE_C_FLAGS_DEBUG
-        CMAKE_C_FLAGS_RELEASE
-        CMAKE_C_FLAGS_RELWITHDEBINFO
-        CMAKE_C_FLAGS_MINSIZEREL
-        CMAKE_CXX_FLAGS
-        CMAKE_CXX_FLAGS_DEBUG
-        CMAKE_CXX_FLAGS_RELEASE
-        CMAKE_CXX_FLAGS_RELWITHDEBINFO
-        CMAKE_CXX_FLAGS_MINSIZEREL)
-    string(REPLACE "-mno-direct-extern-access" "" ${flag_var} "${${flag_var}}")
-endforeach()
 # Initialize LIB_EXISTS to false
 set(LIB_EXISTS FALSE)
 
