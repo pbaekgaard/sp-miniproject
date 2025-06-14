@@ -107,7 +107,7 @@ void Vessel::simulate(std::size_t endTime, std::size_t sampleRate)
         t += r.delay;
 
         // Sample at regular intervals
-        if (static_cast<std::size_t>(t) % sampleRate == 0)
+        if (sampleRate == 0 || static_cast<std::size_t>(t) % sampleRate == 0)
         {
             for (auto &[name, reactant] : reactantTable.table)
             {
