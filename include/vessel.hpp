@@ -3,6 +3,7 @@
 #include "reaction.hpp"
 #include "symboltable.hpp"
 #include <string>
+#include <tuple>
 
 class Vessel
 {
@@ -21,7 +22,8 @@ class Vessel
         return Reaction(0);
     };
     void generateGraph() const;
-    void simulate(std::size_t endTime, std::size_t sampleRate);
+    auto simulate(std::size_t endTime, std::size_t sampleRate, bool multiThreaded = true)
+        -> std::tuple<SymbolTable<std::string, Reactant>, SymbolTable<std::string, Reaction>>;
 
   private:
     std::string name;
