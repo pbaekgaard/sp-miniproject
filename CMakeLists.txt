@@ -51,7 +51,7 @@ set(LIB_EXISTS ${LIB_EXISTS} CACHE INTERNAL "Does the lib target exist")
 
 # add_subdirectory(extern/googletest)
 add_subdirectory(tests)
-
+add_subdirectory(benchmarks)
 add_test(NAME ${PROJECT_NAME} COMMAND ${PROJECT_NAME})
 
 
@@ -60,9 +60,14 @@ set(COMPILE_COMMANDS_IN_BUILD "${CMAKE_BINARY_DIR}/compile_commands.json")
 
 set_target_properties(${PROJECT_NAME} PROPERTIES AUTOMOC ON AUTOUIC ON AUTORCC ON)
 
-add_custom_target(
-        symlink_compile_commands ALL
-        COMMAND ${CMAKE_COMMAND} -E remove -f "${COMPILE_COMMANDS_LINK}"
-        COMMAND ${CMAKE_COMMAND} -E create_symlink "${COMPILE_COMMANDS_IN_BUILD}" "${COMPILE_COMMANDS_LINK}"
-        COMMENT "Creating symlink for compile_commands.json in source root"
-)
+if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+    set(COMPILE_COMMANDS_IN_BUILD "${CMAKE_BINARY_DIR}/compile_commands.json")
+    set(COMPILE_COMMANDS_LINK "${CMAKE_SOURCE_DIR}/compile_commands.json")
+
+    add_custom_target(
+            symlink_compile_commands ALL
+            COMMAND ${CMAKE_COMMAND} -E remove -f "${COMPILE_COMMANDS_LINK}"
+            COMMAND ${CMAKE_COMMAND} -E create_symlink "${COMPILE_COMMANDS_IN_BUILD}" "${COMPILE_COMMANDS_LINK}"
+            COMMENT "Creating symlink for compile_commands.json in source root"
+    )
+endif()

@@ -79,7 +79,6 @@ void generateChart(std::size_t endTime, std::map<std::string, QLineSeries *> ser
     // Usage
     QString rootPath = findProjectRoot();
     chartView->grab().save(rootPath + "/" + QString::fromStdString(chartName + ".png"), "png");
-    chartView->grab().save(QString::fromStdString(chartName + ".png"), "png");
     chartView->show();
 }
 
