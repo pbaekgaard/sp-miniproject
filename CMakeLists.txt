@@ -5,10 +5,9 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-set(CMAKE_AUTORCC ON)
-set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTOUIC ON)
-
+# set(CMAKE_AUTORCC ON)
+# set(CMAKE_AUTOMOC ON)
+# set(CMAKE_AUTOUIC ON)
 
 include(CTest)
 include(cmake/benchmark.cmake)
@@ -26,7 +25,7 @@ set(LIB_EXISTS FALSE)
 
 if(AllSources)
     add_library(lib STATIC ${AllSources})
-    set_target_properties(lib PROPERTIES AUTOMOC ON)
+    set_target_properties(lib PROPERTIES AUTOMOC ON AUTOUIC ON AUTORCC ON)
 
     target_include_directories(lib PUBLIC "${PROJECT_SOURCE_DIR}/include")
 
@@ -59,9 +58,11 @@ add_test(NAME ${PROJECT_NAME} COMMAND ${PROJECT_NAME})
 set(COMPILE_COMMANDS_LINK "${CMAKE_SOURCE_DIR}/compile_commands.json")
 set(COMPILE_COMMANDS_IN_BUILD "${CMAKE_BINARY_DIR}/compile_commands.json")
 
+set_target_properties(${PROJECT_NAME} PROPERTIES AUTOMOC ON AUTOUIC ON AUTORCC ON)
+
 add_custom_target(
-  symlink_compile_commands ALL
-  COMMAND ${CMAKE_COMMAND} -E remove -f "${COMPILE_COMMANDS_LINK}"
-  COMMAND ${CMAKE_COMMAND} -E create_symlink "${COMPILE_COMMANDS_IN_BUILD}" "${COMPILE_COMMANDS_LINK}"
-  COMMENT "Creating symlink for compile_commands.json in source root"
+        symlink_compile_commands ALL
+        COMMAND ${CMAKE_COMMAND} -E remove -f "${COMPILE_COMMANDS_LINK}"
+        COMMAND ${CMAKE_COMMAND} -E create_symlink "${COMPILE_COMMANDS_IN_BUILD}" "${COMPILE_COMMANDS_LINK}"
+        COMMENT "Creating symlink for compile_commands.json in source root"
 )

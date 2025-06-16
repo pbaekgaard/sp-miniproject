@@ -32,7 +32,10 @@ template <typename Key, typename Value> class SymbolTable
             return it->second;
         return std::nullopt;
     }
-
+    bool contains(std::string name) {
+        auto found = table.find(name);
+        return found != table.end();
+    }
     void print() const
     {
         for (const auto &[k, v] : table)

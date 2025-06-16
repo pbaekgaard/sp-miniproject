@@ -62,8 +62,9 @@ Vessel circadian_rhythm()
 
 TEST(CircadianRhythm, full_example)
 {
-    int argc = 0;
-    QApplication app(argc, nullptr);
+    int argc = 1;
+    char *argv[] = {(char *)"test", nullptr};
+    QApplication app(argc, argv);
     const auto alphaA = 50;
     const auto alpha_A = 500;
     const auto alphaR = 0.01;
@@ -113,8 +114,9 @@ TEST(CircadianRhythm, full_example)
     EXPECT_TRUE(reactant.name == "DA");
     EXPECT_TRUE(reactant2.quantity == 0);
     EXPECT_TRUE(reactant2.name == "D_A");
+    auto chartObserver = ChartObserver();
     v.generateGraph();
-    const auto simResults = v.runSimulations(1, 48); // shows chart window but doesn't block
+    const auto simResults = v.runSimulations(1, 48, chartObserver); // shows chart window but doesn't block
 
     // Start Qt event loop (this will show the chart window)
     app.exec();

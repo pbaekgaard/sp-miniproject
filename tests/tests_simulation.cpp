@@ -15,13 +15,13 @@ TEST(SIMULATION, updates_reactants)
     const auto C = v.add("C", 0);
     const auto gamma = 1;
     v.add((A + B) >> gamma >>= C);
-
+    auto chartObserver = ChartObserver();
     auto [reactantTableResults, reactionTableResults] =
-        v.runSimulations(1, 1000); // shows chart window but doesn't block
-
+        v.runSimulations(1, 48, chartObserver); // shows chart window but doesn't block
+    chartObserver.finalize(48);
     // Quit the app after 3 seconds
     // Start Qt event loop (this will show the chart window)
-    // app.exec();
+    app.exec();
 
     // After event loop quits, check results:
     EXPECT_EQ(reactantTableResults.get("A").quantity, 0);
