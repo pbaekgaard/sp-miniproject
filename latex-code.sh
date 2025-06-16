@@ -298,6 +298,7 @@ EOF
         echo '  \end{figure}'
 	done
 
+
 	conclusion=$(find . -path ./extern -prune -o -type f -iname "conclusion.md" -print)
 	for f in $conclusion ; do
 		dirname=${f#./}

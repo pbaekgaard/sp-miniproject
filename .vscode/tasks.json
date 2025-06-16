@@ -40,6 +40,14 @@
       "options": {
         "cwd": "${workspaceFolder}"
       }
+    },
+    {
+      "label": "Run Benchmarks",
+      "type": "shell",
+      "command": "latest_dir=$( [ ! -d build ] && echo Debug || ([ ! -d Debug ] && echo build || (stat -c '%Y' build > /tmp/build_time && stat -c '%Y' Debug > /tmp/debug_time && if [ $(cat /tmp/build_time) -gt $(cat /tmp/debug_time) ]; then echo build; else echo Debug; fi) ) ); GTEST_COLOR=1 ctest --test-dir $latest_dir --output-on-failure -V -R Benchmarks",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      }
     }
   ]
 }

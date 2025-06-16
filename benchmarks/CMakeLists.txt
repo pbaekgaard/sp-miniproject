@@ -25,4 +25,4 @@ if(LIB_EXISTS)
 endif()
 
 
-add_test(NAME ${This} COMMAND ${This} --benchmark_out_format=json --benchmark_out=${PROJECT_SOURCE_DIR}/test_results.json)
+add_test(NAME ${This} COMMAND ${This} --benchmark_out_format=json --benchmark_out=${PROJECT_SOURCE_DIR}/test_results.json --benchmark_format=console --benchmark_time_unit=s --benchmark_color=true)
