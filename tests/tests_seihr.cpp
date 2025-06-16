@@ -4,7 +4,7 @@
 #include <gtest/gtest.h>
 #include "seihr.hpp"
 
-TEST(SEIHR, basetest)
+TEST(SEIHR, basetest)//R9
 {
     const auto N = 1000;
     auto v = seihr(N);
@@ -24,7 +24,7 @@ TEST(SEIHR, basetest)
     EXPECT_EQ(reaction.products, std::vector<Reaction>{R});
 }
 
-TEST(SEIHR, PeakHospitalized)
+TEST(SEIHR, PeakHospitalized) //R7
 {
     auto app = createApp();
     const auto N = 10000;

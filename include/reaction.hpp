@@ -27,16 +27,16 @@ class Reaction
 
     Reaction &operator=(Reaction &&) = default;
     Reaction(const Reaction &other) = default;
-    bool operator==(const Reaction &other) const;
+    bool operator==(const Reaction &other) const; //R1
     Reaction &operator=(const Reaction &) = default;
-    Reaction &operator+(const Reactant &r); // For chaining (A + B + C)
-    template <RateVal T> Reaction &operator>>(T reaction_rate)
+    Reaction &operator+(const Reactant &r); // For chaining (A + B + C) //R1
+    template <RateVal T> Reaction &operator>>(T reaction_rate) //R1
     {
         rate = static_cast<double>(reaction_rate);
         return *this;
     }
-    Reaction &operator>>=(const Reaction &product); // For adding the product to the reaction
-    Reaction &operator>>=(const Reactant &product); // For adding the product to the reaction
+    Reaction &operator>>=(const Reaction &product); // For adding the product to the reaction //R1
+    Reaction &operator>>=(const Reactant &product); // For adding the product to the reaction //R1
     std::vector<Reaction>
         products{}; // Maybe this should be a symbol table? that is generic so we can use Environment in this
     std::vector<Reactant> inputs{}; // Wont hurt to do the same here
@@ -44,7 +44,7 @@ class Reaction
     double delay{std::numeric_limits<double>::max()};
     double rate{0};
     int incrementAmount = 1;
-    friend std::ostream &operator<<(std::ostream &os, const Reaction &r);
+    friend std::ostream &operator<<(std::ostream &os, const Reaction &r); //R1 + R2
     std::string hash() const;
     void print() const
     {
@@ -52,7 +52,7 @@ class Reaction
     }
 };
 
-template <RateVal T> Reaction Reactant::operator>>(T rate) const
+template <RateVal T> Reaction Reactant::operator>>(T rate) const //R1
 {
     auto reaction = Reaction(*this);
     reaction >> rate;

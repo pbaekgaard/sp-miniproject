@@ -25,13 +25,13 @@ Reaction &Reaction::operator>>=(const Reaction &product)
     }
     return *this;
 }
-
+//R1
 Reaction &Reaction::operator>>=(const Reactant &product)
 {
     products.emplace_back(Reaction(product));
     return *this;
 }
-
+//R1
 bool Reaction::operator==(const Reaction &other) const
 {
     return products == other.products && inputs == other.inputs && delay == other.delay && rate == other.rate;
@@ -44,7 +44,7 @@ Reaction &Reaction::operator+(const Reactant &r)
     return *this;
 }
 
-// R2
+// R2 + R1
 std::ostream &operator<<(std::ostream &os, const Reaction &reaction)
 {
     os << "Inputs: ";

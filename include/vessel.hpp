@@ -18,15 +18,16 @@ class Vessel
     Vessel &operator=(const Vessel &) = default;
     Reactant add(std::string item, std::size_t quantity); // Adds to the symbol table
     void add(Reaction reaction_specification);            // Adds to the symbol table
-    SymbolTable<std::string, Reactant> reactantTable;
-    SymbolTable<std::string, Reaction> reactionTable;
+    SymbolTable<std::string, Reactant> reactantTable; //R3
+    SymbolTable<std::string, Reaction> reactionTable; //R3
     Reactant environment()
     {
         return Reactant("Environment", 0);
     };
-    void generateGraph() const;
-    template <isObserver... Observers>
+    void generateGraph() const; //R2.b
+    template <isObserver... Observers> //R7
 
+    //R4 + R7
     auto runSimulations(std::size_t numberOfThreads, std::size_t endTime, Observers &&...observers)
         -> std::tuple<SymbolTable<std::string, Reactant>, SymbolTable<std::string, Reaction>>
     {
@@ -36,7 +37,7 @@ class Vessel
         }
         std::vector<std::future<std::tuple<SymbolTable<std::string, Reactant>, SymbolTable<std::string, Reaction>>>>
             futures;
-
+        //R8
         for (std::size_t i = 0; i < numberOfThreads; ++i)
         {
             if (i == 0)
@@ -88,9 +89,9 @@ class Vessel
 
         return {avgReactants, avgReactions};
     }
-
-  private:
     std::string name;
+  private:
+    //R4 + R7
     template <isObserver... Observers>
     auto simulate(std::size_t endTime, Observers &&...observers)
         -> std::tuple<SymbolTable<std::string, Reactant>, SymbolTable<std::string, Reaction>>

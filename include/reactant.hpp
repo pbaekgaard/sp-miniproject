@@ -11,10 +11,10 @@ class Reactant
     Reactant(Reactant &&) = default;
     Reactant(const Reactant &) = default;
     Reactant &operator=(Reactant &&) = default;
-    bool operator==(const Reactant &other) const;
+    bool operator==(const Reactant &other) const; //R1
     Reactant &operator=(const Reactant &) = default;
-    template <RateVal T> Reaction operator>>(T rate) const;
-    Reaction operator+(const Reactant &other) const;
+    template <RateVal T> Reaction operator>>(T rate) const;//R1
+    Reaction operator+(const Reactant &other) const;//R1
     std::size_t quantity{0};
     std::string name;
 

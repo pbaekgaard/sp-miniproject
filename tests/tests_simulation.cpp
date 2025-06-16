@@ -3,7 +3,7 @@
 #include <gtest/gtest.h>
 #include <tuple>
 
-TEST(SIMULATION, updates_reactants)
+TEST(SIMULATION, updates_reactants) //R9 + R7
 {
     auto app = createApp();
 
@@ -27,9 +27,8 @@ TEST(SIMULATION, updates_reactants)
     EXPECT_EQ(reactantTableResults.get("C").quantity, 1);
 }
 
-TEST(SIMULATION, multithreading)
+TEST(SIMULATION, multithreading) //R9
 {
-    auto app = createApp();
 
     auto v = Vessel{"Jutlandia"};
     const auto A = v.add("A", 1);
@@ -49,4 +48,52 @@ TEST(SIMULATION, multithreading)
     EXPECT_EQ(reactantTableResults.get("A").quantity, 0);
     EXPECT_EQ(reactantTableResults.get("B").quantity, 0);
     EXPECT_EQ(reactantTableResults.get("C").quantity, 1);
+}
+
+TEST(SIMULATION, requirement5_figure1_1) { //R5 + R7 + R9
+    auto app = createApp();
+
+    auto v = Vessel{"Figure 1.1"};
+    const auto A = v.add("A", 100);
+    const auto B = v.add("B", 0);
+    const auto C = v.add("C", 1);
+    const auto gamma = 0.001;
+    v.add((A + C) >> gamma >>= (B+C));
+    auto chartObserver = ChartObserver("Figure 1.1");
+    auto [reactantTableResults, reactionTableResults] =
+        v.runSimulations(1, 2000, chartObserver); // shows chart window but doesn't block
+    chartObserver.finalize(2000);
+    app->exec(); //R6
+}
+
+TEST(SIMULATION, requirement5_figure1_2) { //R5 + R7 + R9
+    auto app = createApp();
+
+    auto v = Vessel{"Figure 1.2"};
+    const auto A = v.add("A", 100);
+    const auto B = v.add("B", 0);
+    const auto C = v.add("C", 2);
+    const auto gamma = 0.001;
+    v.add((A + C) >> gamma >>= (B+C));
+    auto chartObserver = ChartObserver("Figure 1.2");
+    auto [reactantTableResults, reactionTableResults] =
+        v.runSimulations(1, 1500, chartObserver); // shows chart window but doesn't block
+    chartObserver.finalize(1500);
+    app->exec(); //R6
+}
+
+TEST(SIMULATION, requirement5_figure1_3) {//R5 + R7 + R9
+    auto app = createApp();
+
+    auto v = Vessel{"Figure 1.3"};
+    const auto A = v.add("A", 50);
+    const auto B = v.add("B", 50);
+    const auto C = v.add("C", 1);
+    const auto gamma = 0.001;
+    v.add((A + C) >> gamma >>= (B+C));
+    auto chartObserver = ChartObserver("Figure 1.3");
+    auto [reactantTableResults, reactionTableResults] =
+        v.runSimulations(1, 1500, chartObserver); // shows chart window but doesn't block
+    chartObserver.finalize(1500);
+    app->exec(); //R6
 }

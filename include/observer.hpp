@@ -9,6 +9,7 @@
 #include <map>
 #include <string>
 
+//R7
 class Observer
 {
   public:
@@ -25,7 +26,6 @@ class PeakHospitalizedObserver : public Observer
     void operator()(const double t, SymbolTable<std::string, Reactant> &state) override;
 
     void finalize(const double end_time) const override;
-    // R7
 
     std::size_t peakHospitalized = 0;
 };

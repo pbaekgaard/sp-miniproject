@@ -31,7 +31,7 @@ void Vessel::add(Reaction reaction_specification)
     reactionTable.add(reaction_specification.hash(), reaction_specification);
 }
 
-// R2
+// R2.b
 void Vessel::generateGraph() const
 {
     std::ofstream file("graph.dot");

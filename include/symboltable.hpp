@@ -3,7 +3,7 @@
 #include <optional>
 #include <stdexcept>
 #include <unordered_map>
-
+//R3
 template <typename Key, typename Value> class SymbolTable
 {
 
@@ -37,7 +37,7 @@ template <typename Key, typename Value> class SymbolTable
         return found != table.end();
     }
     void print() const
-    {
+    { //R2
         for (const auto &[k, v] : table)
             std::cout << k << " => {\n" << v << "\n}" << std::endl;
     }

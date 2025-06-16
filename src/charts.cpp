@@ -17,7 +17,7 @@ QString findProjectRoot()
     return QCoreApplication::applicationDirPath(); // fallback
 }
 
-void generateChart(std::size_t endTime, std::map<std::string, QLineSeries *> seriesMap, std::string chartName)
+void generateChart(std::size_t endTime, std::map<std::string, QLineSeries *> seriesMap, std::string chartName) //R6
 {
     // Create chart and add series
     QChart *chart = new QChart();
