@@ -62,9 +62,8 @@ Vessel circadian_rhythm()
 
 TEST(CircadianRhythm, full_example)
 {
-    int argc = 1;
-    char *argv[] = {(char *)"test", nullptr};
-    QApplication app(argc, argv);
+    int argc = 0;
+    QApplication app(argc, nullptr);
     const auto alphaA = 50;
     const auto alpha_A = 500;
     const auto alphaR = 0.01;
@@ -95,10 +94,12 @@ TEST(CircadianRhythm, full_example)
     const auto R = v2.add("R", 0);
     const auto C = v2.add("C", 0);
     auto v = circadian_rhythm();
-    // std::cout << "REACTANT TABLE:" << std::endl;
-    // v.reactantTable.print();
-    // std::cout << "\n\n\n\nREACTION TABLE:" << std::endl;
-    // v.reactionTable.print();
+
+    std::cout << "REACTANT TABLE:" << std::endl;
+    v.reactantTable.print();
+    std::cout << "\n\n\n\nREACTION TABLE:" << std::endl;
+    v.reactionTable.print();
+
     const auto reaction = v.reactionTable.get(((A + DA) >> gammaA >>= D_A).hash());
     EXPECT_TRUE((std::find(reaction.inputs.begin(), reaction.inputs.end(), A) != reaction.inputs.end()));
     EXPECT_TRUE((std::find(reaction.inputs.begin(), reaction.inputs.end(), DA) != reaction.inputs.end()));
@@ -113,7 +114,7 @@ TEST(CircadianRhythm, full_example)
     EXPECT_TRUE(reactant2.quantity == 0);
     EXPECT_TRUE(reactant2.name == "D_A");
     v.generateGraph();
-    const auto simResults = v.simulate(48, 0); // shows chart window but doesn't block
+    const auto simResults = v.runSimulations(1, 48); // shows chart window but doesn't block
 
     // Start Qt event loop (this will show the chart window)
     app.exec();

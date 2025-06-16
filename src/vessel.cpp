@@ -10,6 +10,7 @@
 #include <map>
 #include <random>
 #include <string>
+#include <thread>
 #include <tuple>
 
 Vessel::Vessel(std::string vessel_name)
@@ -68,7 +69,50 @@ void Vessel::generateGraph() const
     file.close();
 }
 
-auto Vessel::simulate(std::size_t endTime, std::size_t sampleRate, std::size_t numThreads = 1)
+auto Vessel::runSimulations(std::size_t numberOfThreads, std::size_t endTime)
+    -> std::tuple<SymbolTable<std::string, Reactant>, SymbolTable<std::string, Reaction>>
+{
+    if (numberOfThreads == 1)
+    {
+        return simulate(endTime);
+    }
+    std::vector<std::future<std::tuple<SymbolTable<std::string, Reactant>, SymbolTable<std::string, Reaction>>>>
+        futures;
+
+    for (std::size_t i = 0; i < numberOfThreads; ++i)
+    {
+        futures.push_back(std::async(std::launch::async, [this, endTime]() {
+            // Run one simulation; arguments can be customized
+            return this->simulate(endTime); // e.g., endTime = 1000, sampleRate = 10
+        }));
+    }
+
+    // Prepare for averaging
+    SymbolTable<std::string, Reactant> avgReactants;
+    SymbolTable<std::string, Reaction> avgReactions;
+
+    for (auto &fut : futures)
+    {
+        auto [reactants, reactions] = fut.get();
+
+        // Average reactants
+        for (const auto &[name, reactant] : reactants.table)
+        {
+            auto avgReactant = Reactant(name, reactant.quantity);
+            avgReactants.add(name, avgReactant);
+        }
+    }
+
+    // Divide by number of threads to get the average
+    for (auto &[_, reactant] : avgReactants.table)
+    {
+        reactant.quantity /= numberOfThreads;
+    }
+
+    return {avgReactants, avgReactions};
+}
+
+auto Vessel::simulate(std::size_t endTime)
     -> std::tuple<SymbolTable<std::string, Reactant>, SymbolTable<std::string, Reaction>>
 {
     auto reactantTableAvg = SymbolTable<std::string, Reactant>{};
@@ -116,12 +160,9 @@ auto Vessel::simulate(std::size_t endTime, std::size_t sampleRate, std::size_t n
         t += r.delay;
 
         // Sample at regular intervals
-        if (sampleRate == 0 || static_cast<std::size_t>(t) % sampleRate == 0)
+        for (auto &[name, reactant] : reactantTableCopy.table)
         {
-            for (auto &[name, reactant] : reactantTableCopy.table)
-            {
-                seriesMap[name]->append(t, reactant.quantity);
-            }
+            seriesMap[name]->append(t, reactant.quantity);
         }
 
         // Execute reaction
@@ -136,12 +177,14 @@ auto Vessel::simulate(std::size_t endTime, std::size_t sampleRate, std::size_t n
             {
                 for (auto &input : product.inputs)
                 {
+                    if (input.name == "Environment")
+                        continue;
                     reactantTableCopy.get(input.name).quantity += 1;
                 }
             }
         }
     }
-    generateChart(endTime, seriesMap);
+    // generateChart(endTime, seriesMap);
 
     return std::tuple<SymbolTable<std::string, Reactant>, SymbolTable<std::string, Reaction>>{reactantTableCopy,
                                                                                               reactionTableCopy};
