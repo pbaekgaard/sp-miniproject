@@ -2,6 +2,21 @@
 #include <QSvgGenerator>
 #include <QtCharts>
 #include <qpixmap.h>
+
+QString findProjectRoot()
+{
+    QDir dir(QCoreApplication::applicationDirPath());
+    while (!dir.isRoot())
+    {
+        if (dir.exists("CMakeLists.txt") || dir.exists(".git"))
+        {
+            return dir.absolutePath();
+        }
+        dir.cdUp();
+    }
+    return QCoreApplication::applicationDirPath(); // fallback
+}
+
 void generateChart(std::size_t endTime, std::map<std::string, QLineSeries *> seriesMap, std::string chartName)
 {
     // Create chart and add series
@@ -61,6 +76,9 @@ void generateChart(std::size_t endTime, std::map<std::string, QLineSeries *> ser
     chartView->setRenderHint(QPainter::Antialiasing);
     chartView->resize(1920, 1080);
 
+    // Usage
+    QString rootPath = findProjectRoot();
+    chartView->grab().save(rootPath + "/" + QString::fromStdString(chartName + ".png"), "png");
     chartView->grab().save(QString::fromStdString(chartName + ".png"), "png");
     chartView->show();
 }
