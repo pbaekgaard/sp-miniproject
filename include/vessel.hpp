@@ -17,14 +17,16 @@ class Vessel
     void add(Reaction reaction_specification);            // Adds to the symbol table
     SymbolTable<std::string, Reactant> reactantTable;
     SymbolTable<std::string, Reaction> reactionTable;
-    Reaction environment()
+    Reactant environment()
     {
-        return Reaction(0);
+        return Reactant("Environment", 0);
     };
     void generateGraph() const;
-    auto simulate(std::size_t endTime, std::size_t sampleRate, bool multiThreaded = true)
+    auto runSimulations(std::size_t numberOfSimulations, std::size_t endTime)
         -> std::tuple<SymbolTable<std::string, Reactant>, SymbolTable<std::string, Reaction>>;
 
   private:
     std::string name;
+    auto simulate(std::size_t endTime)
+        -> std::tuple<SymbolTable<std::string, Reactant>, SymbolTable<std::string, Reaction>>;
 };

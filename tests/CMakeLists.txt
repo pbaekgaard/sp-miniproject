@@ -1,5 +1,4 @@
 cmake_minimum_required(VERSION 3.12)
-
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
@@ -19,7 +18,7 @@ find_package(Qt6 COMPONENTS Core Gui Widgets Charts REQUIRED)
 target_include_directories(${This} PUBLIC "${PROJECT_SOURCE_DIR}/include")
 
 # Link Qt6::Widgets explicitly for QApplication
-target_link_libraries(${This} PUBLIC gtest_main Qt6::Core Qt6::Gui Qt6::Widgets Qt6::Charts)
+target_link_libraries(${This} PUBLIC gtest_main benchmark::benchmark_main Qt6::Core Qt6::Gui Qt6::Widgets Qt6::Charts)
 
 if(LIB_EXISTS)
     target_link_libraries(${This} PUBLIC lib)

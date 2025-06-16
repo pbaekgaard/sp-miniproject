@@ -10,6 +10,8 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 
 include(CTest)
+include(cmake/benchmark.cmake)
+include(cmake/gtest.cmake)
 enable_testing()
 
 # Collect source files except main.cpp
@@ -47,7 +49,7 @@ endif()
 set(LIB_EXISTS ${LIB_EXISTS} CACHE INTERNAL "Does the lib target exist")
 
 
-add_subdirectory(extern/googletest)
+# add_subdirectory(extern/googletest)
 add_subdirectory(tests)
 
 add_test(NAME ${PROJECT_NAME} COMMAND ${PROJECT_NAME})

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 set -e
-#set -x
+# set -x
 
 author="$1"
 title="$2"
@@ -186,21 +186,39 @@ EOF
 	echo '\begin{document}'
 	echo '  \maketitle'
 
+
 	md_files=$(find . -path ./extern -prune -o -type f -iname "*.md" -print)
+
 	for f in $md_files ; do
-		dirname=${f#./}
-		dirname=${dirname%%/*}
-		case "$dirname" in
-			.idea|"cmake-build-"*|"build"|"out"|"extern"|"debug-build")
-				continue
-				;;
-		esac
-        if [ -n "$PANDOC" ]; then
-            "$PANDOC" -f markdown -t pdf --variable=papersize:A4 --variable=geometry:margin=1cm "$f" > "$f.pdf"
-		    echo '  \includepdf[pages=-]{'$f'.pdf}'
-        else
-            echo '  \verbatiminput{'$f'}'
-        fi
+	    # Strip ./ prefix
+	    relative=${f#./}
+	    
+	    # Extract just the file name
+	    filename=$(basename "$relative")
+	    
+	    # Exclude certain filenames
+	    case "$filename" in
+		conclusion.*|todo.*)
+		    continue
+		    ;;
+	    esac
+
+	    # Extract top-level directory
+	    dirname=${relative%%/*}
+	    
+	    # Exclude certain top-level directories
+	    case "$dirname" in
+		.idea|"cmake-build-"*|"build"|"out"|"extern"|"debug-build")
+		    continue
+		    ;;
+	    esac
+
+	    if [ -n "$PANDOC" ]; then
+		"$PANDOC" -f markdown -t pdf --variable=papersize:A4 --variable=geometry:margin=1cm "$f" > "$f.pdf"
+		echo '  \includepdf[pages=-]{'"$f"'.pdf}'
+	    else
+		echo '  \verbatiminput{'"$f"'}'
+	    fi
 	done
 
 	text_files=$(find . -path ./extern -prune -o -type f \( -iname "*.txt" \) -print)
@@ -280,7 +298,24 @@ EOF
         echo '  \end{figure}'
 	done
 
+	conclusion=$(find . -path ./extern -prune -o -type f -iname "conclusion.md" -print)
+	for f in $conclusion ; do
+		dirname=${f#./}
+		dirname=${dirname%%/*}
+		case "$dirname" in
+			.idea|"cmake-build-"*|"build"|"out"|"extern"|"debug-build")
+				continue
+				;;
+		esac
+        if [ -n "$PANDOC" ]; then
+            "$PANDOC" -f markdown -t pdf --variable=papersize:A4 --variable=geometry:margin=1cm "$f" > "$f.pdf"
+		    echo '  \includepdf[pages=-]{'$f'.pdf}'
+        else
+            echo '  \verbatiminput{'$f'}'
+        fi
+	done
 	echo '\end{document}'
+
 }
 
 echo "Generates LaTeX report from C/C++ sources and TeX files it can find in the current directory."
