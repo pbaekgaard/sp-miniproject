@@ -1,4 +1,6 @@
 #pragma once
 #include <QLineSeries>
 #include <map>
-void generateChart(std::size_t endTime, std::map<std::string, QLineSeries *> seriesMap);
+#include <qapplication.h>
+void generateChart(std::size_t endTime, std::map<std::string, QLineSeries *> seriesMap, std::string chartName);
+QApplication *createApp();

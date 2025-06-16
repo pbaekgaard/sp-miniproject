@@ -1,13 +1,18 @@
+#include "charts.hpp"
+#include <QSvgGenerator>
 #include <QtCharts>
-void generateChart(std::size_t endTime, std::map<std::string, QLineSeries *> seriesMap)
+#include <qpixmap.h>
+void generateChart(std::size_t endTime, std::map<std::string, QLineSeries *> seriesMap, std::string chartName)
 {
     // Create chart and add series
     QChart *chart = new QChart();
     chart->setTitle("Reactant Quantities Over Time");
+    std::replace(chartName.begin(), chartName.end(), ' ', '_');
 
     for (auto &[name, series] : seriesMap)
     {
         chart->addSeries(series);
+        series->setName(QString::fromStdString(name)); // Ensure series names are set for legend
     }
 
     // Create axes
@@ -49,13 +54,21 @@ void generateChart(std::size_t endTime, std::map<std::string, QLineSeries *> ser
     maxQuantity += padding;
 
     axisY->setRange(minQuantity, maxQuantity);
-
-    // For time axis you can also set the range similarly if desired:
     axisX->setRange(0, endTime);
 
     // Display chart
     QChartView *chartView = new QChartView(chart);
     chartView->setRenderHint(QPainter::Antialiasing);
-    chartView->resize(3000, 600);
+    chartView->resize(1920, 1080);
+
+    chartView->grab().save(QString::fromStdString(chartName + ".png"), "png");
     chartView->show();
+}
+
+QApplication *createApp()
+{
+    static int argc = 1;
+    static char *argv[] = {(char *)"test", nullptr};
+    static QApplication *app = new QApplication(argc, argv);
+    return app;
 }

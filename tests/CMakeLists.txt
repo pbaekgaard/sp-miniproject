@@ -13,12 +13,12 @@ file(GLOB Sources
 
 add_executable(${This} ${Sources})
 
-find_package(Qt6 COMPONENTS Core Gui Widgets Charts REQUIRED)
+find_package(Qt6 COMPONENTS Core Gui Widgets Charts Svg REQUIRED)
 
 target_include_directories(${This} PUBLIC "${PROJECT_SOURCE_DIR}/include")
 
 # Link Qt6::Widgets explicitly for QApplication
-target_link_libraries(${This} PUBLIC gtest_main benchmark::benchmark_main Qt6::Core Qt6::Gui Qt6::Widgets Qt6::Charts)
+target_link_libraries(${This} PUBLIC gtest_main benchmark::benchmark_main Qt6::Core Qt6::Gui Qt6::Widgets Qt6::Charts Qt6::Svg)
 
 if(LIB_EXISTS)
     target_link_libraries(${This} PUBLIC lib)

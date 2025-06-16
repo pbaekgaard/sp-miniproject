@@ -18,7 +18,7 @@ enable_testing()
 file(GLOB_RECURSE AllSources CONFIGURE_DEPENDS "${PROJECT_SOURCE_DIR}/src/*.cpp")
 list(FILTER AllSources EXCLUDE REGEX ".*/main\\.cpp$")
 
-find_package(Qt6 COMPONENTS Core Gui Widgets Charts REQUIRED)
+find_package(Qt6 COMPONENTS Core Gui Widgets Charts Svg REQUIRED)
 
 # Initialize LIB_EXISTS to false
 set(LIB_EXISTS FALSE)
@@ -30,7 +30,7 @@ if(AllSources)
     target_include_directories(lib PUBLIC "${PROJECT_SOURCE_DIR}/include")
 
     # Link Qt to the library target too
-    target_link_libraries(lib PUBLIC Qt6::Core Qt6::Gui Qt6::Widgets Qt6::Charts)
+    target_link_libraries(lib PUBLIC Qt6::Core Qt6::Gui Qt6::Widgets Qt6::Charts Qt6::Svg )
 
     option(ENABLE_STRICT "Enable strict compilation warnings" OFF)
     if(ENABLE_STRICT AND CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")

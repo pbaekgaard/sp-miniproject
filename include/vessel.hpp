@@ -27,7 +27,7 @@ class Vessel
     void generateGraph() const;
     template <isObserver... Observers>
 
-    auto runSimulations(std::size_t numberOfThreads, std::size_t endTime, Observers&&... observers)
+    auto runSimulations(std::size_t numberOfThreads, std::size_t endTime, Observers &&...observers)
         -> std::tuple<SymbolTable<std::string, Reactant>, SymbolTable<std::string, Reaction>>
     {
         if (numberOfThreads == 1)
@@ -39,9 +39,21 @@ class Vessel
 
         for (std::size_t i = 0; i < numberOfThreads; ++i)
         {
-            futures.push_back(std::async(std::launch::async, [this, endTime]() {
+            if (i == 0)
+            {
+
+                futures.push_back(std::async(std::launch::async, [&, this]() mutable {
+                    // Run one simulation; arguments can be customized
+                    return this->simulate(
+                        endTime,
+                        std::forward<Observers>(observers)...); // e.g., endTime = 1000, sampleRate = 10
+                }));
+                continue;
+            }
+            futures.push_back(std::async(std::launch::async, [=, this]() mutable {
                 // Run one simulation; arguments can be customized
-                return this->simulate(endTime); // e.g., endTime = 1000, sampleRate = 10
+                return this->simulate(endTime,
+                                      std::forward<Observers>(observers)...); // e.g., endTime = 1000, sampleRate = 10
             }));
         }
 
@@ -56,9 +68,12 @@ class Vessel
             // Average reactants
             for (const auto &[name, reactant] : reactants.table)
             {
-                if (avgReactants.contains(name)) {
+                if (avgReactants.contains(name))
+                {
                     avgReactants.table.at(name).quantity += reactant.quantity;
-                }else {
+                }
+                else
+                {
                     auto avgReactant = Reactant(name, reactant.quantity);
                     avgReactants.add(name, avgReactant);
                 }
@@ -77,7 +92,7 @@ class Vessel
   private:
     std::string name;
     template <isObserver... Observers>
-    auto simulate(std::size_t endTime, Observers&&... observers)
+    auto simulate(std::size_t endTime, Observers &&...observers)
         -> std::tuple<SymbolTable<std::string, Reactant>, SymbolTable<std::string, Reaction>>
     {
         auto reactantTableAvg = SymbolTable<std::string, Reactant>{};
@@ -138,5 +153,4 @@ class Vessel
         return std::tuple<SymbolTable<std::string, Reactant>, SymbolTable<std::string, Reaction>>{reactantTableCopy,
                                                                                                   reactionTableCopy};
     }
-
 };
